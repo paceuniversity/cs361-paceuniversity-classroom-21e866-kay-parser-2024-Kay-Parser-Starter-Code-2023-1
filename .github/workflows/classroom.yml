@@ -17,7 +17,7 @@ jobs:
       id: parser-tests
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Parser Tests
+        test-name: Parser Test
         command: gradle test
         timeout: 10
     - name: Autograding Reporter
