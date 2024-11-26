@@ -299,10 +299,8 @@ public class ConcreteSyntax {
 		// TODO TO BE COMPLETED
 		match("if");
 		match("(");
-    	Expression condition = expression();
-		c.test = condition;
+		c.test = expression();
    		match(")");
-		Statement statement = statement();
 		c.thenbranch = statement();
 		if (token.getValue().equals("else")) {
 			token = input.nextToken();
@@ -317,10 +315,8 @@ public class ConcreteSyntax {
 		// TODO TO BE COMPLETED
 		match("while");
 		match("(");
-    	Expression condition = expression();
-		l.test = condition;
+		l.test = expression();
    		match(")");
-		Statement statement = statement();
 		l.body = statement();
 		return l;
 	}
