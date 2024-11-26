@@ -53,6 +53,10 @@ public class ConcreteSyntax {
 			// bypass " main { "
 			match(header[i]);
 			// add the required code
+		match("{");
+		p.decpart = declarations();
+		p.body = statements();
+    	match("}");
 		return p;
 	}
 
@@ -83,7 +87,7 @@ public class ConcreteSyntax {
 		else if (token.getValue().equals("bool"))
 			t = new Type(token.getValue());
 		else
-			throw new RuntimeException(SyntaxError("int | boolean"));
+			throw new RuntimeException(SyntaxError("integer | bool"));
 		token = input.nextToken(); // pass over the type
 		return t;
 	}
@@ -150,6 +154,11 @@ public class ConcreteSyntax {
 		Assignment a = new Assignment();
 		if (token.getType().equals("Identifier")) {
 			// TODO TO BE COMPLETED
+			a.target = new Variable();
+			a.target.id = token.getValue();
+			token = input.nextToken();
+			match(":=");
+			a.source = expression();
 		} else
 			throw new RuntimeException(SyntaxError("Identifier"));
 		return a;
@@ -290,6 +299,17 @@ public class ConcreteSyntax {
 		// IfStatement --> if ( Expression ) Statement { else Statement }opt
 		Conditional c = new Conditional();
 		// TODO TO BE COMPLETED
+		match("if");
+		match("(");
+    	Expression condition = expression();
+		c.test = condition;
+   		match(")");
+		Statement statement = statement();
+		c.thenbranch = statement();
+		if (token.getValue().equals("else")) {
+			token = input.nextToken();
+			c.elsebranch = statement();
+		}
 		return c;
 	}
 
@@ -297,6 +317,13 @@ public class ConcreteSyntax {
 		// WhileStatement --> while ( Expression ) Statement
 		Loop l = new Loop();
 		// TODO TO BE COMPLETED
+		match("while");
+		match("(");
+    	Expression condition = expression();
+		l.test = condition;
+   		match(")");
+		Statement statement = statement();
+		l.body = statement();
 		return l;
 	}
 
