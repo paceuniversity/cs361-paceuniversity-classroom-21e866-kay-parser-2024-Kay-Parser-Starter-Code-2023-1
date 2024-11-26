@@ -47,10 +47,12 @@ public class ConcreteSyntax {
 	public Program program() {
 		// TODO TO BE COMPLETED 
 		// Program --> main '{' Declarations Statements '}'
+		String[] header = { "main", "{" };
 		Program p = new Program();
+		for (int i = 0; i < header.length; i++)
 			// bypass " main { "
-			// add the required code
-		match("main");
+			match(header[i]);
+
 		match("{");
 		p.decpart = declarations();
 		p.body = statements();
@@ -142,7 +144,10 @@ public class ConcreteSyntax {
 		// Block --> '{' Statements '}'
 		Block b = new Block();
 		while (!token.getValue().equals("}")) {
-			b.blockmembers.addElement(statement());
+			Statement s = statement();
+			if(!(s instanceof Skip)){
+				b.blockmembers.addElement(s);	
+			}
 		}
 		return b;
 	}
