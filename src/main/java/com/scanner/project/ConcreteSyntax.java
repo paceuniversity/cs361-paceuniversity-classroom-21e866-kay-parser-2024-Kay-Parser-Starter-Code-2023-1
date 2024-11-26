@@ -47,13 +47,12 @@ public class ConcreteSyntax {
 	public Program program() {
 		// TODO TO BE COMPLETED 
 		// Program --> main '{' Declarations Statements '}'
-		String[] header = { };
+		String[] header = { "main", "{" };
 		Program p = new Program();
 		for (int i = 0; i < header.length; i++)
 			// bypass " main { "
 			match(header[i]);
 			// add the required code
-		match("{");
 		p.decpart = declarations();
 		p.body = statements();
     	match("}");
@@ -64,8 +63,7 @@ public class ConcreteSyntax {
 		// TODO TO BE COMPLETED 
 		// Declarations --> { Declaration }*
 		Declarations ds = new Declarations();
-		while (token.getValue().equals("integer")
-				|| token.getValue().equals("bool")) {
+		while (token.getValue().equals("integer") || token.getValue().equals("bool")) {
 			declaration(ds);
 		}
 		return ds;
@@ -205,8 +203,7 @@ public class ConcreteSyntax {
 		// TODO TO BE CHECKED AND COMPLETED. Do we have all the operators? 
 		while (token.getValue().equals("<") || token.getValue().equals("<=")
 				|| token.getValue().equals(">") || token.getValue().equals(">=")
-				|| token.getValue().equals("==")
-				|| token.getValue().equals("!=")) {
+				|| token.getValue().equals("==") || token.getValue().equals("!=")) {
 			b = new Binary();
 			// TODO TO BE COMPLETED
 			b.term1 = e;
@@ -277,7 +274,7 @@ public class ConcreteSyntax {
 		} else if (token.getType().equals("Literal")) {
 			Value v = null;
 			if (isInteger(token.getValue()))
-				v = new Value((new Integer(token.getValue())).intValue());
+				v = new Value((Integer.parseInt(token.getValue())));
 			else if (token.getValue().equals("True"))
 				v = new Value(true);
 			else if (token.getValue().equals("False"))
@@ -301,10 +298,8 @@ public class ConcreteSyntax {
 		// TODO TO BE COMPLETED
 		match("if");
 		match("(");
-    	Expression condition = expression();
-		c.test = condition;
+		c.test = expression();
    		match(")");
-		Statement statement = statement();
 		c.thenbranch = statement();
 		if (token.getValue().equals("else")) {
 			token = input.nextToken();
@@ -319,10 +314,8 @@ public class ConcreteSyntax {
 		// TODO TO BE COMPLETED
 		match("while");
 		match("(");
-    	Expression condition = expression();
-		l.test = condition;
+		l.test = expression();
    		match(")");
-		Statement statement = statement();
 		l.body = statement();
 		return l;
 	}
